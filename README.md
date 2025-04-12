@@ -5,16 +5,6 @@
 A Model Context Protocol (MCP) server made with Typescript and nodejs that allows Claude Desktop to connect to and interact with Google Calendar.
 
 
-## 📕Table of contents
-- [Features](#features)
-- [Requirements](#requirements)
-- [Getting started](#getting-started)
-    - [1. Creare new project](#1-create-new-project)
-- [Tailwind configuration](#tailwind-configuration)
-- [Framer Motion](#framer-motion)
-- [Sitemap, robots.txt and Manifest](#sitemap---robotstxt---manifest)
-- [Resources](#resources)
-
 ## Features
 
 - Connect Claude Desktop AI to your Google account
@@ -40,6 +30,12 @@ Access to the [google cloud console](https://console.cloud.google.com), then cre
 2. Create a new project
 3. Go to **APIs and Services** > **Credentials** tab > click on **Create new credentials**.
 4. Select _OAuth Client ID_ as type of credential and _Web Application_ as application type. Then set a name for the credentials and add authorized redirect URIs as shown below:
+
+
+<p align="center">
+    <img src="https://github.com/RossiFire/mcp-google-calendar/blob/master/public/assets/urls-config.png" alt="logo" />
+</p>
+
 
 Once finished, you should see the **Client ID** and **Client Secret**.
 
