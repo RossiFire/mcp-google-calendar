@@ -1,5 +1,5 @@
 # 🗓️ Google Calendar MCP Server
-A Model Context Protocol (MCP) server made with Typescript and nodejs that allows Claude Desktop to connect to and interact with Google Calendar.
+A Model Context Protocol (MCP) server made with Typescript and nodejs that allows Claude Desktop to connect and interact with Google Calendar.
 
 
 ## 📕Table of contents
@@ -35,7 +35,8 @@ A Model Context Protocol (MCP) server made with Typescript and nodejs that allow
 - Node.js (v16 or higher)
 - npm or yarn
 - Google account with Calendar access
-- Google OAuth2 credentials (for Cloud OAuth method)
+- Google OAuth2 credentials
+- Claude Desktop
 
 ## Getting Started
 Since this is a local server, you'll need to set up google cloud project to use it. Here's a detailed guide on how to get your tokens.
