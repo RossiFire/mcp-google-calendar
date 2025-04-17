@@ -6,7 +6,7 @@ import auth from './auth.js'
 import fs from 'fs'
 import path from 'path'
 import { fileURLToPath } from 'url'
-import { setAccessToken } from './token.js'
+import { setTokens } from './token.js'
 import * as dotenv from "dotenv";
 
 dotenv.config({ path: ".env" });
@@ -19,7 +19,7 @@ if (!process.env.EXPRESS_SECRET) {
 // Alternative implementation to __dirname since we're in module mode
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-const token_file = path.join(__dirname, 'token.txt');
+const token_file_path = path.join(__dirname, 'token.txt');
 
 const GOOGLE_SCOPES = [
   'https://www.googleapis.com/auth/calendar.readonly', 
@@ -40,9 +40,10 @@ export async function authorizeWithGoogle(): Promise<void> {
     app.use(passport.initialize());
     app.use(passport.session());
 
-    const tokenFromFile = fs.existsSync(token_file) ? fs.readFileSync(token_file, 'utf8') : undefined;
-    if(tokenFromFile){
-      setAccessToken(tokenFromFile)
+    const fileData = fs.existsSync(token_file_path) ? fs.readFileSync(token_file_path, 'utf8') : undefined;
+    if(fileData){
+      const { token, refreshToken } = JSON.parse(fileData);
+      setTokens({ token, refreshToken })
       return
     }
 
@@ -53,7 +54,11 @@ export async function authorizeWithGoogle(): Promise<void> {
         });
     });
     
-    app.get('/auth/google', passport.authenticate('google', { scope: GOOGLE_SCOPES }));
+    app.get('/auth/google', passport.authenticate('google', { 
+      scope: GOOGLE_SCOPES ,
+      accessType: 'offline',
+      prompt: 'consent',
+    }));
   
     const authPromise = new Promise<string>((resolve, reject) => {
       try {
@@ -61,9 +66,10 @@ export async function authorizeWithGoogle(): Promise<void> {
             passport.authenticate('google', { failureRedirect: '/' }),
             (req, res) => {
                 const token = (req.user! as any).token as string
+                const refreshToken = (req.user! as any).refreshToken as string
 
-                setAccessToken(token)
-                fs.writeFileSync(token_file, token)
+                setTokens({ token, refreshToken })
+                fs.writeFileSync(token_file_path, JSON.stringify({token, refreshToken}))
 
                 res.send("<h3> ✅ Successfully logged in, you can now close this window...</h3>")
                 resolve(token)

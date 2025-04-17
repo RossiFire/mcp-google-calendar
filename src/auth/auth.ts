@@ -26,8 +26,9 @@ export default (passport: PassportStatic) => {
     },
     (token: string, refreshToken: string, profile: Profile, done) => {
         return done(null, {
-            profile: profile,
-            token: token
+            profile,
+            token,
+            refreshToken
         });
     }));
 };

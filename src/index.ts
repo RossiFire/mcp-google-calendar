@@ -4,7 +4,7 @@ import { authorizeWithGoogle } from "./auth/googleAuth.js";
 import server from "./mcp/server.js";
 import { initGoogleCalendarApi } from "./util.js";
 import { initalizeTools } from "./mcp/tools/index.js";
-import { getAccessToken } from "./auth/token.js";
+import { getTokens } from "./auth/token.js";
 dotenv.config({ path: ".env" });
 
 
@@ -13,7 +13,7 @@ async function main() {
   initalizeTools();
 
   await authorizeWithGoogle()
-  await initGoogleCalendarApi(getAccessToken()!)
+  await initGoogleCalendarApi(getTokens()!)
 
   const transport = new StdioServerTransport();
   await server.connect(transport);
